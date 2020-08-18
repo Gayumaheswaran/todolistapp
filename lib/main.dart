@@ -113,9 +113,8 @@ class _FirstAppState extends State<FirstApp> {
                         onPressed: () {
                            if (_form.currentState.validate()) {
                              var obj= new HttpService();
-                             var result;
                              obj.GetRequest();
-                             //result = obj.PostRequest();
+                              obj.PostRequest();
                            // if(result['message']=='Authorized') {
                                Navigator.push(
                                  context, MaterialPageRoute(
