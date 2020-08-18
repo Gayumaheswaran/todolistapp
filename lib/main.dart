@@ -14,6 +14,7 @@ import 'package:todoapp/incompleted_task.dart';
      // TODO: implement build
      return MaterialApp(
        home: FirstApp(),
+       debugShowCheckedModeBanner: false,
      );
    }
  }
@@ -26,12 +27,6 @@ class _FirstAppState extends State<FirstApp> {
    var email;
    var password;
 
-//   void Authorized() {
-//     if (_email.text == "gayathri@3edge.in" &&
-//         _password.text == "gayathri") {
-//       print('authorised');
-//     }
-//   }
   TextEditingController _email = TextEditingController();
   TextEditingController _password = TextEditingController();
   GlobalKey<FormState> _form = GlobalKey<FormState>();
@@ -56,9 +51,7 @@ class _FirstAppState extends State<FirstApp> {
                               fontSize: 20.0,
                               fontWeight:FontWeight.bold,
                               fontStyle: FontStyle.italic
-
                         )
-
                         ),
                       ),
                     ),
@@ -118,57 +111,52 @@ class _FirstAppState extends State<FirstApp> {
                     SizedBox(height: 5.0),
                     RaisedButton(
                         onPressed: () {
-                          var response;
-                            var obj= new HttpService();
-                            Map result = jsonDecode(response.body);
-                           if (_form.currentState.validate())
-                           {
-                             print("ok");
-                             obj.PostRequest();
-                             if (result["message"] =="Authorized") {
-                              print("Success" + result["message"]);
+                           if (_form.currentState.validate()) {
+                             var obj= new HttpService();
+                             var result;
+                             obj.GetRequest();
+                             //result = obj.PostRequest();
+                           // if(result['message']=='Authorized') {
                                Navigator.push(
                                  context, MaterialPageRoute(
                                    builder: (context) => Incompleted()),
                                );
                                print("authorised");
                              }
-                             else {
+                         //  }
+                            else {
                                NotifyAlert(context);
                              }
-
+                           //}
                         },
                         child: Text("Login"),
                         textColor: Colors.black,
                         color: Colors.blueAccent,
                     ),
-
                   ],
                 ),
               ),
             )
       ),
-
     );
-
   }
 }
-
 class HttpService {
-
   void GetRequest() async {
     var response = await http.get(
-        "http://117.193.71.237:10001/get/todo/654321");
-
+        "http://117.193.64.41:10001/get/todo/654321");
     print(response.body);
+    Map result = jsonDecode(response.body);
   }
 
-void PostRequest() async {
-    var response = await http.post("http://117.193.71.237:10001/login",
+  PostRequest() async {
+    var response = await http.post("http://117.193.64.41:10001/login",
         body: json.encode({"email": "gayathri@3edge.in",
           "password": "gayathri"})
     );
     print(response.body);
+
+    return response.body;
   }
 }
  void NotifyAlert(BuildContext context)
